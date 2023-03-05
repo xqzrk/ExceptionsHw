@@ -14,6 +14,8 @@ public class RepositoryTest {
     Product product7 = new Smartphone(7, "Galaxy", 25_000, "Samsung");
     Product product8 = new Smartphone(8, "Galaxy A2", 35_000, "Samsung");
     Product product9 = new Smartphone(9, "IPhone 15 Pro", 135_000, "Apple");
+    Product productCheckId = new Smartphone(1, "IPhone 16 Pro", 145_000, "Apple");
+
 
     @Test
     public void shouldSave() {
@@ -86,5 +88,17 @@ public class RepositoryTest {
         Product actual = repo.findById(1);
         Product expected = product1;
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldErrorMsgIfAlreadyExist() {
+        ProductRepository repo = new ProductRepository();
+        repo.save(product1);
+        repo.save(product2);
+        repo.save(product3);
+
+        Assertions.assertThrows(AlreadyExistException.class, () -> {
+            repo.save(productCheckId);
+        });
     }
 }
